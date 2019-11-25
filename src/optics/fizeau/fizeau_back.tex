@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper]{geometry}
+\geometry{
+ a4paper,
+ left=25mm,
+ right=25mm,
+ top=25mm,
+ bottom=25mm
+ }
+\usepackage{tikz}
+\usetikzlibrary{optics}
+\usetikzlibrary{positioning}
+\usetikzlibrary{fit}
+\usetikzlibrary{calc}
+\usetikzlibrary{ocgx}
+\usepackage{float}
+\usetikzlibrary{intersections}
+\usetikzlibrary{shapes}
+\title{MWInterferometer}
+\author{Hugo Levy-Falk }
+\date{November 2019}
+
+
+\usepackage{hyperref}
+\usepackage[
+    type={CC},
+    modifier={by-sa},
+    version={4.0},
+]{doclicense}
+
+\begin{document}
+\maketitle
+\doclicenseThis
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[use optics]
+        \node[laser] (laser) at (0,0) {HeNe};
+        \node[thick optics element,right=1cm of laser.aperture east,label=below:Beam expander, object height=2cm, object aspect ratio=0.6] (beam expander) {};
+        \node[semi-transparent mirror,rotate=-45,right=2cm of beam expander.east, anchor=center, object height=2.5cm] (splitter) {};
+        \node[right=3cm of splitter.east](helper){};
+        \node[lens,right=1cm of helper,label=below:{120mm converger}, focal length=3.5cm] (reference) {};
+        %\node[convex mirror,right=3cm of reference, label=below left:Sample, spherical mirror angle=from_radius(1.5cm),draw mirror center={red,label=right:Center}](sample){};
+        \node[right=4.5cm of reference] (center) {};
+        \draw[name path=sphere] (center) ++ (-135:1.5) arc (225:135:1.5);
+        \node[mirror,left=0.75cm of center, label=right:Back Surface](sample){};
+        \node[generic sensor, below=2.5cm of splitter.center ,anchor=body center, rotate=-90,label=right:CCD camera] (camera) {};
+        \node[draw,fit=(laser) (beam expander) (splitter) (helper) (camera),inner sep=0.75cm,label=Interferometer] (interferometer) {};
+
+        % rays
+        \draw[->-] (laser.aperture east) -- (sample.center);
+        \draw[red, ->>-] (sample.center) -| (camera.aperture west);
+
+        \path[name path=lensnf] (reference.lens north) -- (reference.east focus);
+        \path[name path=lenssf] (reference.lens south) -- (reference.east focus);
+        \path[name intersections={of=lensnf and sphere,by=sphere north}];
+        \path[name intersections={of=lenssf and sphere,by=sphere south}];
+
+        \draw[name path=expnsamplen] (beam expander.north east) |- (reference.lens north) -- (sphere north) -- (sample.center);
+        \draw[name path=expssamples] (beam expander.south east) |- (reference.lens south) -- (sphere south) -- (sample.center);
+    \end{tikzpicture}
+    \caption{120mm converger reference setup focused on back surface}
+    \label{fig:curv_setup_c}
+\end{figure}
+
+\end{document}

@@ -1,0 +1,58 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper]{geometry}
+\geometry{
+ a4paper,
+ left=25mm,
+ right=25mm,
+ top=25mm,
+ bottom=25mm
+ }
+\usepackage{tikz}
+\usetikzlibrary{optics}
+\usetikzlibrary{positioning}
+\usetikzlibrary{fit}
+\usetikzlibrary{calc}
+\usetikzlibrary{ocgx}
+\usepackage{float}
+\usetikzlibrary{intersections}
+\usetikzlibrary{shapes}
+\title{MWInterferometer}
+\author{Hugo Levy-Falk }
+\date{November 2019}
+
+
+\usepackage{hyperref}
+\usepackage[
+    type={CC},
+    modifier={by-sa},
+    version={4.0},
+]{doclicense}
+
+\begin{document}
+\maketitle
+\doclicenseThis
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[use optics]
+        \node[laser] (laser) at (0,0) {HeNe};
+        \node[thick optics element,right=1cm of laser.aperture east,label=below:Beam expander, object height=2cm, object aspect ratio=0.6] (beam expander) {};
+        \node[semi-transparent mirror,rotate=-45,right=2cm of beam expander.east, anchor=center, object height=2.5cm] (splitter) {};
+        \node[right=3cm of splitter.east](helper){};
+        \node[semi-transparent mirror,right=1cm of helper,label=below:{Reference plate $\lambda/20$}] (reference) {};
+        \node[mirror,right=3cm of reference, label=right:Sample](sample){};
+        \node[generic sensor, below=2.5cm of splitter.center,anchor=body center, rotate=-90,label=right:CCD camera] (camera) {};
+        \node[draw,fit=(laser) (beam expander) (splitter) (helper) (camera),inner sep=0.75cm,label=Interferometer] (interferometer) {};
+
+        \draw (reference.north) to[dim arrow={label=$\ell$}] (sample.north);
+
+        % rays
+        \draw[->-] (laser.aperture east) -- (sample.center);
+        \draw[red, ->>-] (sample.center) -| (camera.aperture west);
+
+    \end{tikzpicture}
+    \caption{Flat reference setup}
+    \label{fig:flat_setup}
+\end{figure}
+\end{document}
