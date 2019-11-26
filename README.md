@@ -17,8 +17,8 @@ You can find here my Tikz figures, everything under Creative Common by-sa 4.0.
             * [Fizeau with spherical reference focused on center of curvature](#fizeau-with-spherical-reference-focused-on-center-of-curvature)
             * [Fizeau with spherical reference focused on back surface](#fizeau-with-spherical-reference-focused-on-back-surface)
             * [Fizeau with spherical reference collimated on back surface](#fizeau-with-spherical-reference-collimated-on-back-surface)
-
-
+         * [Fourier optics](#fourier-optics)
+            * [Fourier setup](#fourier-setup)
 
 # Figures
 
@@ -62,3 +62,10 @@ You can find here my Tikz figures, everything under Creative Common by-sa 4.0.
 
 [source](/src/optics/fizeau/fizeau_collimated.tex)
 ![](/images/optics/fizeau/fizeau_collimated.png)
+
+### Fourier optics
+
+#### Fourier setup
+
+[source](/src/optics/fourier/fourier_setup.tex)
+![](/images/optics/fourier/fourier_setup.png)

@@ -1,0 +1,77 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper]{geometry}
+\geometry{
+ a4paper,
+ left=25mm,
+ right=25mm,
+ top=25mm,
+ bottom=25mm
+ }
+\usepackage{tikz}
+\usetikzlibrary{optics}
+\usetikzlibrary{positioning}
+\usetikzlibrary{fit}
+\usetikzlibrary{calc}
+\usetikzlibrary{ocgx}
+\usepackage{float}
+\usetikzlibrary{intersections}
+\usetikzlibrary{shapes}
+\title{Fourier setup}
+\author{Hugo Levy-Falk }
+\date{November 2019}
+
+
+\usepackage{hyperref}
+\usepackage[
+	type={CC},
+	modifier={by-sa},
+	version={4.0},
+]{doclicense}
+
+\begin{document}
+\maketitle
+\doclicenseThis
+
+Eye adapted from https://tex.stackexchange.com/a/66491 .
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[use optics]
+
+	\node[generic lamp](led) at (0,0) {LED};
+	\node[thick optics element, right=0.25 of led, label=south:Diffuser](diffuser){};
+	\node[diaphragm, right=0.25 of diffuser, label=north:{Source iris}](s_pin){};
+	\node[lens, right=1 of s_pin, label=south:{$L_1$}](L1){};
+	\node[diffraction grating, right=0.5 of L1, label={Object}](obj){};
+	\node[diaphragm, right=3 of obj, label=north:{Aperture iris}](aperture_iris){};
+	\node[lens, right=0.5 of aperture_iris, label=south:{$L_2$}](L2){};
+	\node[lens, right=0.5 of L2, label=south:{$L_3$}](L3){};
+	\node[beam splitter, right=1 of L3, label=south:{$M_1$}](M1){};
+
+	\node[lens, rotate=90, above=1 of M1.north, anchor=center, label=south:{$L_4$}](L4){};
+
+	% eye, adapted from https://tex.stackexchange.com/a/66491
+	\pgfmathsetmacro{\eyeaperture}{55}
+	\pgfmathsetmacro{\eyesize}{1}
+	\pgfmathsetmacro{\eyerotation}{-90}
+	\node[above=1.5 of L4.center](eye_center){};
+	\draw[rotate around={\eyerotation:(eye_center)}](eye_center) -- ++(-.5*\eyeaperture:\eyesize)
+		(eye_center) -- ++(.5*\eyeaperture:\eyesize);
+	\draw (eye_center) ++(\eyerotation+\eyeaperture:.75*\eyesize) arc (\eyerotation+\eyeaperture:\eyerotation-\eyeaperture:.75*\eyesize);
+	\draw[fill=gray] (eye_center) ++(\eyerotation+\eyeaperture/3:.75*\eyesize) % start point
+  arc (\eyerotation+180-\eyeaperture:\eyerotation+180+\eyeaperture:.28*\eyesize);
+\draw[fill=black] (eye_center) ++(\eyerotation+\eyeaperture/3:.75*\eyesize) % start point
+  arc (\eyerotation+\eyeaperture/3:\eyerotation-\eyeaperture/3:.75*\eyesize);
+
+	\node[generic sensor, right=1 of M1, label=south:CCD](camera){};
+
+	\draw (obj.south) to[dim arrow'={label'=$f_2$}] (L2.south);
+	\draw (L3.south) to[dim arrow'={label'=$f_3$}] (L3.south -| camera.aperture south west) ;
+
+
+\end{tikzpicture}
+	\caption{Fourier setup}
+\end{figure}
+
+\end{document}
