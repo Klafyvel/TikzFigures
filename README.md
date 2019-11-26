@@ -67,5 +67,7 @@ You can find here my Tikz figures, everything under Creative Common by-sa 4.0.
 
 #### Fourier setup
 
+Eye adapted from [here](https://tex.stackexchange.com/a/66491).
+
 [source](/src/optics/fourier/fourier_setup.tex)
 ![](/images/optics/fourier/fourier_setup.png)
