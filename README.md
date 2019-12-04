@@ -19,6 +19,9 @@ You can find here my Tikz figures, everything under Creative Common by-sa 4.0.
             * [Fizeau with spherical reference collimated on back surface](#fizeau-with-spherical-reference-collimated-on-back-surface)
          * [Fourier optics](#fourier-optics)
             * [Fourier setup](#fourier-setup)
+         * [Generalistic Optics](#generalistic-optics)
+            * [Foucault knife edge](#foucault-knife-edge)
+               * [With spherical aberration](#with-spherical-aberration)
 
 # Figures
 
@@ -71,3 +74,13 @@ Eye adapted from [here](https://tex.stackexchange.com/a/66491).
 
 [source](/src/optics/fourier/fourier_setup.tex)
 ![](/images/optics/fourier/fourier_setup.png)
+
+### Generalistic Optics
+
+#### Foucault knife edge
+
+##### With spherical aberration
+
+[source](/src/optics/foucault/knife_edge.tex)
+![](/images/optics/foucault/knife_edge.tex)
+

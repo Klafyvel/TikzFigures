@@ -1,0 +1,104 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper]{geometry}
+\geometry{
+ a4paper,
+ left=25mm,
+ right=25mm,
+ top=25mm,
+ bottom=25mm
+ }
+\usepackage{tikz}
+\usetikzlibrary{optics}
+\usetikzlibrary{positioning}
+\usetikzlibrary{fit}
+\usetikzlibrary{calc}
+\usetikzlibrary{ocgx}
+\usepackage{float}
+\usetikzlibrary{intersections}
+\usetikzlibrary{shapes}
+\title{Foucault knife edge}
+\author{Hugo Levy-Falk }
+\date{December 2019}
+
+
+\usepackage{hyperref}
+\usepackage[
+    type={CC},
+    modifier={by-sa},
+    version={4.0},
+]{doclicense}
+
+\begin{document}
+\maketitle
+\doclicenseThis
+
+\begin{figure}[H]
+    \centering
+\begin{tikzpicture}[use optics]
+
+% from tikz-optics documentation
+\def\toVerticalProjection#1#2#3{let \p{1} = #1, \p{2} = #2, \p{3} = #3 in-- (\x{3},{\y{1}+(\y{2}-\y{1})/(\x{2}-\x{1})*(\x{3}-\x{1})})}
+
+\draw[fill=gray!30](0cm,-1cm) coordinate (A) -- (0cm,0cm) coordinate (B)-- (0.05cm,-0.25cm) coordinate (C) -- (0.05cm,-1cm) coordinate (D);
+\node[below=0.5cm of D, label={Knife edge}]() {};
+\node[spherical mirror, label=south:{Mirror}, spherical mirror angle=from_radius(4cm), spherical mirror orientation=rtl,left=1.70cm of B,object height=4.1cm](M1) {};
+
+\node[gray!30,screen, right=1cm of B,label=above:{Screen}](screen){};
+\node[right=0.2cm of B](ext_focus){};
+\node[left=0.75cm of B](int_focus){};
+
+\path[name path=knife_edge] (B) -- (A);
+\path[name path=ns_screen](screen.north) -- (screen.south);
+
+\draw (M1.arc center) -- (screen.center);
+\draw[->-] (M1.170) -- (B) ;
+\draw[->-] (M1.190) -- (B);
+\draw[->-, name path=middle_low_ray] (B) \toVerticalProjection{(M1.170)}{(B)}{(screen)};
+\draw[->-, name path=middle_top_ray] (B) \toVerticalProjection{(M1.190)}{(B)}{(screen)};
+
+% upper out ray
+\draw[->-, purple, name path=upper_ray] (M1.150) \toVerticalProjection{(M1.150)}{(ext_focus)}{(screen)};
+
+% lower out ray
+\draw[purple, densely dotted, name path=bottom_ray] (M1.210) \toVerticalProjection{(M1.210)}{(ext_focus)}{(screen)};
+\path[name intersections={of=bottom_ray and knife_edge,by=bottom_intersection}];
+\draw[->-, purple] (M1.210) -- (bottom_intersection);
+
+% upper in ray
+\draw[orange, densely dotted, name path=bottom_ray_in] (M1.178) \toVerticalProjection{(M1.178)}{(int_focus)}{(screen)};
+\path[name intersections={of=bottom_ray_in and knife_edge,by=bottom_intersection}];
+\draw[->-={at=0.145}, orange] (M1.178) -- (bottom_intersection);
+
+% lower in ray
+\draw[->-={at=0.1}, orange] (M1.182) \toVerticalProjection{(M1.182)}{(int_focus)}{(screen)};
+
+% pattern profile
+\path[name intersections={of=bottom_ray and ns_screen,by=pattern_ext_top}];
+\path[name intersections={of=middle_top_ray and ns_screen,by=pattern_int_top}];
+\path[name intersections={of=middle_low_ray and ns_screen,by=pattern_int_bottom}];
+\path[name intersections={of=upper_ray and ns_screen,by=pattern_ext_bottom}];
+
+\draw[black,thick] (pattern_ext_top) -- (pattern_int_top);
+\draw[red,thick] (pattern_int_top) -- (screen.center);
+\draw[black,thick] (screen.center) -- (pattern_int_bottom);
+\draw[red,thick] (pattern_int_bottom) -- (pattern_ext_bottom);
+
+% arrow
+\node[right=0 of screen.center](arrow_start) {};
+\node[right=1cm of arrow_start](arrow_end) {};
+\draw[->] (arrow_start) --node[below]{view} node[above]{Front} ++ (arrow_end);
+
+% pattern front
+\node[right=0.25cm of arrow_end](circle_center){};
+\path[fill=black] (circle_center) ++(180:0.5cm) arc (180:0:0.5cm) -- cycle;
+\path[fill=red] (circle_center) ++(180:0.5cm) arc (-180:0:0.5cm) -- cycle;
+\path[fill=red] (circle_center) ++(180:0.25cm) arc (180:0:0.25cm) -- cycle;
+\path[fill=black] (circle_center) ++(180:0.25cm) arc (-180:0:0.25cm) -- cycle;
+
+
+\end{tikzpicture}
+    \caption{Foucault knife edge test for a mirror with spherical aberration}
+\end{figure}
+
+\end{document}
