@@ -82,5 +82,5 @@ Eye adapted from [here](https://tex.stackexchange.com/a/66491).
 ##### With spherical aberration
 
 [source](/src/optics/foucault/knife_edge.tex)
-![](/images/optics/foucault/knife_edge.tex)
+![](/images/optics/foucault/knife_edge.png)
 
