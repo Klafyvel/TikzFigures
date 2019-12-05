@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper]{geometry}
+\geometry{
+ a4paper,
+ left=25mm,
+ right=25mm,
+ top=25mm,
+ bottom=25mm
+ }
+\usepackage{tikz}
+\usetikzlibrary{optics}
+\usetikzlibrary{positioning}
+\usetikzlibrary{fit}
+\usetikzlibrary{calc}
+\usetikzlibrary{ocgx}
+\usepackage{float}
+\usetikzlibrary{intersections}
+\usetikzlibrary{shapes}
+\title{Foucault knife edge}
+\author{Hugo Levy-Falk }
+\date{December 2019}
+
+
+\usepackage{hyperref}
+\usepackage[
+    type={CC},
+    modifier={by-sa},
+    version={4.0},
+]{doclicense}
+
+\begin{document}
+\maketitle
+\doclicenseThis
+
+\begin{figure}[H]
+    \centering
+\begin{tikzpicture}[use optics]
+
+% from tikz-optics documentation
+\def\toVerticalProjection#1#2#3{let \p{1} = #1, \p{2} = #2, \p{3} = #3 in-- (\x{3},{\y{1}+(\y{2}-\y{1})/(\x{2}-\x{1})*(\x{3}-\x{1})})}
+
+\draw[fill=gray!30](0cm,-1cm) coordinate (A) -- (0cm,0cm) coordinate (B)-- (0.05cm,-0.25cm) coordinate (C) -- (0.05cm,-1cm) coordinate (D);
+\node[below=0.5cm of D, label={Knife edge}]() {};
+\node[spherical mirror, label=south:{Mirror}, spherical mirror angle=from_radius(3cm), spherical mirror orientation=rtl,left=4cm of B,,draw mirror center](M1) {};
+\node (f) at (0,0.5){};
+ \node[circle,draw=black, fill=white, inner sep=0pt,minimum size=5pt,left=0.5cm of M1.mirror center,label=below:{Source}](S){};
+
+\node[gray!30,screen, right=1cm of B,label=above:{Screen}](screen){};
+\node[right=0.5 of screen.center,label=below:{$z$}](arrow_end){};
+\node[left=0.5 of M1.center](arrow_start){};
+\node[label=above:{$z=0$}](z0) at (M1.mirror center){};
+
+\path[name path=knife_edge] (B) -- (A);
+\path[name path=ns_screen](screen.north) -- (screen.south);
+
+\draw[->-, name path=middle_low_ray] (M1.197) \toVerticalProjection{(M1.197)}{(f)}{(screen)};
+\draw[densely dotted,->] (arrow_start) -- (arrow_end);
+\draw[->-](S) -- (M1.197);
+
+\draw (M1.165) to[dim arrow={label=$R$,raise=0}] (M1.mirror center);
+\draw (M1.mirror center) to[dim arrow'={label'=$z_s$, raise=-1cm}] (S);
+\draw (M1.mirror center) to[dim arrow={label=$z_k$, raise=1cm}] (B);
+\draw (M1.center) to[dim arrow'={label'=$x$}] (M1.197);
+\draw (B) to[dim arrow'={label'=$t_x$,raise=0}] (f);
+
+\end{tikzpicture}
+    \caption{Foucault knife edge test, transverse aberration}
+\end{figure}
+
+\end{document}

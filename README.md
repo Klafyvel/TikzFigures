@@ -22,6 +22,7 @@ You can find here my Tikz figures, everything under Creative Common by-sa 4.0.
          * [Generalistic Optics](#generalistic-optics)
             * [Foucault knife edge](#foucault-knife-edge)
                * [With spherical aberration](#with-spherical-aberration)
+               * [Transverse aberration](#transverse-aberration)
 
 # Figures
 
@@ -83,4 +84,10 @@ Eye adapted from [here](https://tex.stackexchange.com/a/66491).
 
 [source](/src/optics/foucault/knife_edge.tex)
 ![](/images/optics/foucault/knife_edge.png)
+
+##### Transverse aberration
+
+[source](/src/optics/foucault/transverse_aberration.tex)
+![](/images/optics/foucault/transverse_aberration.png)
+
 
